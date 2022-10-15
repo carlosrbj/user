@@ -33,6 +33,11 @@ public class UserController {
 
     @GetMapping("validatePassword")
     public ResponseEntity<Boolean> validatePassword(@RequestParam String document, @RequestParam String password){
-        return ResponseEntity.ok(userService.validatePassword(document, password));
+         return ResponseEntity.ok(userService.validatePassword(document, password));
+    }
+
+    @GetMapping("validateAuthPass")
+    public ResponseEntity<Boolean> validateAuthPass(@RequestParam String document, @RequestParam String password){
+        return ResponseEntity.ok(userService.validateAuthpass(document, password));
     }
 }

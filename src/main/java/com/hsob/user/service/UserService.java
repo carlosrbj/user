@@ -8,12 +8,12 @@ import com.hsob.user.repository.AddressRepository;
 import com.hsob.user.repository.UserRepository;
 import com.hsob.user.utils.Utils;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.sql.Update;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityManager;
@@ -24,18 +24,18 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.springframework.http.HttpStatus.NO_CONTENT;
-
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private static final Logger logger = Logger.getLogger(UserService.class.getName());
     @Autowired
-    private final ModelMapper modelMapper;
+    private ModelMapper modelMapper;
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private AddressRepository addressRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -54,6 +54,7 @@ public class UserService {
             String digest = Utils.generateDigest(password, salt);
             user.setSalt(salt);
             user.setDigest(digest);
+            user.setAuthpass(passwordEncoder.encode(password));
             Address address = modelMapper.map(userDto.getAddress(), Address.class);
 
             userRepository.save(user);
@@ -99,6 +100,19 @@ public class UserService {
         if (user.isPresent()){
             String digest = Utils.generateDigest(password, user.get().getSalt());
             if (digest.equals(user.get().getDigest())){
+                return true;
+            } else {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "password informed is invalid");
+            }
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with document " + document + " not found");
+        }
+    }
+
+    public boolean validateAuthpass(String document, String password) {
+        Optional<User> user = userRepository.findByDocument(document);
+        if (user.isPresent()){
+            if (passwordEncoder.matches(password, user.get().getAuthpass())){
                 return true;
             } else {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "password informed is invalid");

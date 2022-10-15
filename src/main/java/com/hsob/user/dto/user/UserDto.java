@@ -1,6 +1,7 @@
 package com.hsob.user.dto.user;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hsob.user.entity.address.Address;
 import com.hsob.user.entity.user.*;
 import lombok.AllArgsConstructor;
@@ -25,4 +26,5 @@ public class UserDto {
     private String digest;
     private String salt;
     private AddressDto address;
+    private String authpass;
 }

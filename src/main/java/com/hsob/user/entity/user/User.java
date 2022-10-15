@@ -1,5 +1,6 @@
 package com.hsob.user.entity.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hsob.user.entity.address.Address;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -50,6 +51,9 @@ public class User {
     private String salt;
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "user")
     private List<Address> addresses;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String authpass;
 
 
 }
