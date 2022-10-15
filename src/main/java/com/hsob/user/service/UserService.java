@@ -11,7 +11,10 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.sql.Update;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,6 +23,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @Service
 @RequiredArgsConstructor
@@ -66,14 +71,14 @@ public class UserService {
     }
 
     private User setAddress(String document, Address address) {
-        User user = userRepository.findByDocument(document);
+        Optional<User> user = userRepository.findByDocument(document);
         List<Address> list = new ArrayList<>();
-        if (user != null){
-            address.setUser(user);
+        if (user.isPresent()){
+            address.setUser(user.get());
             list.add(address);
-            user.setAddresses(list);
+            user.get().setAddresses(list);
         }
-        return user;
+        return user.get();
     }
 
     public List<UserDto> getAllUsers(){
@@ -90,8 +95,16 @@ public class UserService {
     }
 
     public boolean validatePassword(String document, String password) {
-        User user = userRepository.findByDocument(document);
-        String digest = Utils.generateDigest(password, user.getSalt());
-        return digest.equals(user.getDigest());
+        Optional<User> user = userRepository.findByDocument(document);
+        if (user.isPresent()){
+            String digest = Utils.generateDigest(password, user.get().getSalt());
+            if (digest.equals(user.get().getDigest())){
+                return true;
+            } else {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "password informed is invalid");
+            }
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with document " + document + " not found");
+        }
     }
 }
