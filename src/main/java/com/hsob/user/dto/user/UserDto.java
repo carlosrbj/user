@@ -1,15 +1,12 @@
 package com.hsob.user.dto.user;
 
-import com.hsob.documentdb.user.Address;
-import com.hsob.documentdb.user.DocumentType;
-import com.hsob.documentdb.user.Gender;
-import com.hsob.documentdb.user.GenderIdentity;
+
+import com.hsob.user.entity.address.Address;
+import com.hsob.user.entity.user.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -27,5 +24,5 @@ public class UserDto {
     private String social_name;
     private String digest;
     private String salt;
-    private Address address;
+    private AddressDto address;
 }

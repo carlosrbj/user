@@ -1,8 +1,11 @@
 package com.hsob.user.repository;
 
-import com.hsob.documentdb.user.User;
+import com.hsob.user.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
-public interface UserRepository extends JpaRepository<User, Long>, QuerydslPredicateExecutor<User> {
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    User findByDocument(String document);
 }

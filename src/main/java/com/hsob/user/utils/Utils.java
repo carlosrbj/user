@@ -1,20 +1,14 @@
 package com.hsob.user.utils;
 
-import com.hsob.documentdb.user.User;
+
+import com.hsob.user.entity.user.User;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.jasypt.digest.StandardStringDigester;
 import org.jasypt.salt.StringFixedSaltGenerator;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.security.SecureRandom;
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.Random;
 
 /**

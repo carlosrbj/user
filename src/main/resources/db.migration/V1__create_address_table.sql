@@ -1,0 +1,14 @@
+CREATE TABLE addresses (
+  id BIGINT AUTO_INCREMENT NOT NULL,
+   city VARCHAR(100) NULL,
+   state VARCHAR(2) NULL,
+   country VARCHAR(30) NULL,
+   zipcode VARCHAR(20) NULL,
+   complement VARCHAR(10) NULL,
+   street VARCHAR(100) NULL,
+   number VARCHAR(10) NULL,
+   user_id BIGINT NULL,
+   CONSTRAINT pk_addresses PRIMARY KEY (id)
+);
+
+ALTER TABLE addresses ADD CONSTRAINT FK_ADDRESSES_ON_USER FOREIGN KEY (user_id) REFERENCES users (id);

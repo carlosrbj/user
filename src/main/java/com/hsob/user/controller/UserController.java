@@ -1,6 +1,5 @@
 package com.hsob.user.controller;
 
-import com.hsob.documentdb.user.User;
 import com.hsob.user.dto.user.UserDto;
 import com.hsob.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -24,5 +24,10 @@ public class UserController {
                 .toUri();
         return ResponseEntity.created(uri).body(userCreated);
 
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserDto>> getAllUsers(@RequestBody UserDto userDto, @RequestHeader String password, @RequestHeader String confirmPassword,UriComponentsBuilder uriBuilder){
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 }
