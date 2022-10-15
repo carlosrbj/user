@@ -27,7 +27,12 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserDto>> getAllUsers(@RequestBody UserDto userDto, @RequestHeader String password, @RequestHeader String confirmPassword,UriComponentsBuilder uriBuilder){
+    public ResponseEntity<List<UserDto>> getAllUsers(){
         return ResponseEntity.ok(userService.getAllUsers());
+    }
+
+    @GetMapping("validatePassword")
+    public ResponseEntity<Boolean> validatePassword(@RequestParam String document, @RequestParam String password){
+        return ResponseEntity.ok(userService.validatePassword(document, password));
     }
 }

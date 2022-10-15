@@ -88,4 +88,10 @@ public class UserService {
         });
         return responseList;
     }
+
+    public boolean validatePassword(String document, String password) {
+        User user = userRepository.findByDocument(document);
+        String digest = Utils.generateDigest(password, user.getSalt());
+        return digest.equals(user.getDigest());
+    }
 }
