@@ -1,6 +1,6 @@
 package com.hsob.user.security;
 
-import com.hsob.user.dto.user.UserDto;
+import com.hsob.user.model.user.UserRequest;
 import com.hsob.user.entity.user.User;
 import com.hsob.user.repository.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -23,7 +23,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = userRepository.findByDocument(username);
         if (user.isEmpty()) throw new UsernameNotFoundException("User " + username + " not found.");
-        UserDto userDto = modelMapper.map(user.get(), UserDto.class);
-        return new UserDataDetails(userDto);
+        UserRequest userRequest = modelMapper.map(user.get(), UserRequest.class);
+        return new UserDataDetails(userRequest);
     }
 }

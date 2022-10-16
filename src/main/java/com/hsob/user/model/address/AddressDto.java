@@ -1,14 +1,17 @@
-package com.hsob.user.dto.user;
+package com.hsob.user.model.address;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * @author carlos
+ */
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class AddressDto {
     private Long id;
     private String city;

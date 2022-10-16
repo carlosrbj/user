@@ -1,8 +1,6 @@
 package com.hsob.user.security;
 
-import com.hsob.user.dto.user.UserDto;
-import com.hsob.user.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.hsob.user.model.user.UserRequest;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -10,9 +8,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class UserDataDetails implements UserDetails {
-    private final UserDto userDetail;
+    private final UserRequest userDetail;
 
-    public UserDataDetails(UserDto userDetail) {
+    public UserDataDetails(UserRequest userDetail) {
         this.userDetail = userDetail;
     }
 

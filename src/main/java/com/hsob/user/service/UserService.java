@@ -1,7 +1,7 @@
 package com.hsob.user.service;
 
-import com.hsob.user.dto.user.AddressDto;
-import com.hsob.user.dto.user.UserDto;
+import com.hsob.user.model.user.AddressRequest;
+import com.hsob.user.model.user.UserRequest;
 import com.hsob.user.entity.address.Address;
 import com.hsob.user.entity.user.User;
 import com.hsob.user.repository.AddressRepository;
@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -40,22 +39,22 @@ public class UserService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public UserDto saveUser(UserDto userDto, String password, String confirmPassword) {
+    public UserRequest saveUser(UserRequest userRequest, String password, String confirmPassword) {
 
         if (password.isEmpty() || password.equals(confirmPassword)){
-            User user = modelMapper.map(userDto, User.class);
+            User user = modelMapper.map(userRequest, User.class);
             if (password.isEmpty()){
                 password = "123";
             }
-            if (userDto.getSocial_name() != null){
-                user.setName(userDto.getSocial_name());
+            if (userRequest.getSocial_name() != null){
+                user.setName(userRequest.getSocial_name());
             }
             String salt = Utils.generateSalt();
             String digest = Utils.generateDigest(password, salt);
             user.setSalt(salt);
             user.setDigest(digest);
             user.setAuthpass(passwordEncoder.encode(password));
-            Address address = modelMapper.map(userDto.getAddress(), Address.class);
+            Address address = modelMapper.map(userRequest.getAddress(), Address.class);
 
             userRepository.save(user);
             address.setUser(user);
@@ -64,7 +63,7 @@ public class UserService {
             user = setAddress(user.getDocument(),address);
 
             userRepository.save(user);
-            return modelMapper.map(user, UserDto.class);
+            return modelMapper.map(user, UserRequest.class);
         } else {
             logger.log(Level.INFO, "password and confirm password do not match.");
             throw new IllegalArgumentException("password and confirm password do not match");
@@ -82,15 +81,15 @@ public class UserService {
         return user.get();
     }
 
-    public List<UserDto> getAllUsers(){
+    public List<UserRequest> getAllUsers(){
         List<User> userList = userRepository.findAll();
-        List<UserDto> responseList = new ArrayList<>();
+        List<UserRequest> responseList = new ArrayList<>();
         userList.forEach(user -> {
             Address address = addressRepository.findByUser(user);
-            AddressDto addressDto = modelMapper.map(address, AddressDto.class);
-            UserDto userDto = modelMapper.map(user, UserDto.class);
-            userDto.setAddress(addressDto);
-            responseList.add(userDto);
+            AddressRequest addressRequest = modelMapper.map(address, AddressRequest.class);
+            UserRequest userRequest = modelMapper.map(user, UserRequest.class);
+            userRequest.setAddress(addressRequest);
+            responseList.add(userRequest);
         });
         return responseList;
     }

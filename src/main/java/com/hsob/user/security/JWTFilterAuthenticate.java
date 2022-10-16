@@ -3,7 +3,7 @@ package com.hsob.user.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hsob.user.dto.user.UserDto;
+import com.hsob.user.model.user.UserRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -32,9 +32,9 @@ public class JWTFilterAuthenticate extends UsernamePasswordAuthenticationFilter 
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException {
        try {
-           UserDto userDto = new ObjectMapper().readValue(request.getInputStream(), UserDto.class);
+           UserRequest userRequest = new ObjectMapper().readValue(request.getInputStream(), UserRequest.class);
            return authenticationManager.authenticate(
-                   new UsernamePasswordAuthenticationToken(userDto.getDocument(), userDto.getAuthpass(), new ArrayList<>()));
+                   new UsernamePasswordAuthenticationToken(userRequest.getDocument(), userRequest.getAuthpass(), new ArrayList<>()));
        } catch (IOException e){
            throw new RuntimeException("Authenticate failure", e);
        }

@@ -51,9 +51,5 @@ public class User {
     private String salt;
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "user")
     private List<Address> addresses;
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String authpass;
-
-
 }
