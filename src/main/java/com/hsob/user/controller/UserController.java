@@ -5,6 +5,7 @@ import com.hsob.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -25,18 +26,6 @@ public class UserController {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String field = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(field, errorMessage);
-        });
-        return errors;
-    }
-
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handle204ValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String field = ((FieldError) error).getField();
@@ -69,5 +58,15 @@ public class UserController {
     @GetMapping("validateAuthPass")
     public ResponseEntity<Boolean> validateAuthPass(@RequestParam String document, @RequestParam String password){
         return ResponseEntity.ok(userService.validateAuthpass(document, password));
+    }
+
+    @GetMapping("/home")
+    public ResponseEntity<String> hello() {
+        try {
+            return ResponseEntity.ok("hello");
+        }catch (Exception e){
+            e.getMessage();
+        }
+        return null;
     }
 }

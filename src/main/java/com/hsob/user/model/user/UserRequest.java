@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
 @Getter
@@ -40,6 +41,7 @@ public class UserRequest {
     @NotBlank(message = "gender_identity cannot be empty")
     private String gender_identity;
 
+    @NotEmpty
     private String social_name;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
