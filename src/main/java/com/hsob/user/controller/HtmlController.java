@@ -10,10 +10,6 @@ public class HtmlController {
 
     @GetMapping("/home")
     public String hello() {
-        try {
-        return "hello.html";
-        }catch (Exception e){
-            return e.getMessage();
-        }
+        return "hello";
     }
 }
