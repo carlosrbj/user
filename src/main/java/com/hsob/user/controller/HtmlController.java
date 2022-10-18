@@ -17,6 +17,11 @@ public class HtmlController {
         return "home";
     }
 
+    @GetMapping("/index")
+    public String index() {
+        return "index";
+    }
+
     @GetMapping("/hello")
     public String hello(ModelMap modelMap) {
         modelMap.addAttribute("name", "Carlos");
