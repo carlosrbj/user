@@ -35,6 +35,8 @@ public class JWTConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/home").permitAll()
                 .antMatchers(HttpMethod.GET, "/hello").permitAll()
                 .antMatchers(HttpMethod.GET, "/index").permitAll()
+                .antMatchers(HttpMethod.GET, "/save-user").permitAll()
+                .antMatchers(HttpMethod.GET, "/").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTFilterAuthenticate(authenticationManager()))

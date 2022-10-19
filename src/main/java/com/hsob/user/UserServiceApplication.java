@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableCaching
 //@EnableEurekaClient
 //@ComponentScan(basePackages = {"com.hsob.documentdb", "com.hsob.user"})
-//@EnableAutoConfiguration(exclude = {ErrorMvcAutoConfiguration.class})
+@EnableAutoConfiguration(exclude = {ErrorMvcAutoConfiguration.class})
 public class UserServiceApplication {
 
 	public static void main(String[] args) {

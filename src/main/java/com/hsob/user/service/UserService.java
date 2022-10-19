@@ -42,6 +42,7 @@ public class UserService {
     public UserRequest saveUser(UserRequest userRequest, String password, String confirmPassword) {
 
         if (password.isEmpty() || password.equals(confirmPassword)){
+            if (userRequest.getAddress() == null) userRequest.setAddress(new AddressRequest());
             User user = modelMapper.map(userRequest, User.class);
             if (password.isEmpty()){
                 password = "123";
