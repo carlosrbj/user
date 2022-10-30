@@ -30,13 +30,16 @@ public class JWTConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/login").permitAll()
+                .antMatchers(HttpMethod.GET, "/login").permitAll()
                 .antMatchers(HttpMethod.GET, "/users/*").permitAll()
                 .antMatchers(HttpMethod.GET, "/home").permitAll()
                 .antMatchers(HttpMethod.GET, "/hello").permitAll()
-                .antMatchers(HttpMethod.GET, "/index").permitAll()
                 .antMatchers(HttpMethod.GET, "/save-user").permitAll()
                 .antMatchers(HttpMethod.GET, "/").permitAll()
+
+                .antMatchers(HttpMethod.POST, "/users").permitAll()
+                .antMatchers(HttpMethod.POST, "/home").permitAll()
+                .antMatchers(HttpMethod.POST, "/save-user").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTFilterAuthenticate(authenticationManager()))

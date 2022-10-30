@@ -19,6 +19,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,31 +40,28 @@ public class UserService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public UserRequest saveUser(UserRequest userRequest, String password, String confirmPassword) {
+    public UserRequest saveUser(UserRequest userRequest) {
 
-        if (password.isEmpty() || password.equals(confirmPassword)){
-            if (userRequest.getAddress() == null) userRequest.setAddress(new AddressRequest());
+        if (userRequest.getPassword().isEmpty() || userRequest.getPassword().equals(userRequest.getConfirm_password())){
             User user = modelMapper.map(userRequest, User.class);
-            if (password.isEmpty()){
-                password = "123";
-            }
-            if (userRequest.getSocial_name() != null){
-                user.setName(userRequest.getSocial_name());
+            if (userRequest.getPassword().isEmpty()){
+                userRequest.setPassword("123");
             }
             String salt = Utils.generateSalt();
-            String digest = Utils.generateDigest(password, salt);
+            String digest = Utils.generateDigest(userRequest.getPassword(), salt);
             user.setSalt(salt);
             user.setDigest(digest);
-            user.setAuthpass(passwordEncoder.encode(password));
-            Address address = modelMapper.map(userRequest.getAddress(), Address.class);
+            user.setAuthpass(passwordEncoder.encode(userRequest.getPassword()));
 
             userRepository.save(user);
-            address.setUser(user);
 
-            addressRepository.save(address);
-            user = setAddress(user.getDocument(),address);
-
-            userRepository.save(user);
+            if (userRequest.getAddress() != null){
+                Address address = modelMapper.map(userRequest.getAddress(), Address.class);
+                address.setUser(user);
+                addressRepository.save(address);
+                user = setAddress(user.getDocument(),address);
+                userRepository.save(user);
+            }
             return modelMapper.map(user, UserRequest.class);
         } else {
             logger.log(Level.INFO, "password and confirm password do not match.");

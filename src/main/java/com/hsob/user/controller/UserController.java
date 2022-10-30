@@ -36,8 +36,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserRequest> saveUser(@RequestBody @Valid UserRequest userRequest, @RequestHeader String password, @RequestHeader String confirmPassword, UriComponentsBuilder uriBuilder){
-        UserRequest userCreated = userService.saveUser(userRequest, password, confirmPassword);
+    public ResponseEntity<UserRequest> saveUser(@RequestBody @Valid UserRequest userRequest, UriComponentsBuilder uriBuilder){
+        UserRequest userCreated = userService.saveUser(userRequest);
         URI uri = uriBuilder.path("/user/{id}")
                 .buildAndExpand(userCreated.getId())
                 .toUri();

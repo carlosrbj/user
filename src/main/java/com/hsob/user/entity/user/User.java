@@ -11,6 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,19 +31,19 @@ public class User {
     @Size(min=11, max=14)
     private String document;
     @NotNull
-    @Enumerated(EnumType.STRING)
-    private DocumentType document_type;
+//    @Enumerated(EnumType.STRING)
+    private String document_type;
     @NotNull
     @Size(max=50)
     private String email;
     @Size(max=30)
     private String phone;
     @NotNull
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
+//    @Enumerated(EnumType.STRING)
+    private String gender;
     @NotNull
-    @Enumerated(EnumType.STRING)
-    private GenderIdentity gender_identity;
+//    @Enumerated(EnumType.STRING)
+    private String gender_identity;
     @Size(max=100)
     private String social_name;
     @NotNull
@@ -50,6 +51,6 @@ public class User {
     @NotNull
     private String salt;
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "user")
-    private List<Address> addresses;
+    private List<Address> addresses = new ArrayList<>();
     private String authpass;
 }

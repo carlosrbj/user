@@ -33,6 +33,7 @@ public class UserRequest {
     @Email(message = "Invalid E-mail format")
     private String email;
 
+    @NotBlank(message = "phone cannot be empty")
     private String phone;
 
     @NotBlank(message = "gender cannot be empty")
@@ -41,7 +42,6 @@ public class UserRequest {
     @NotBlank(message = "gender_identity cannot be empty")
     private String gender_identity;
 
-    @NotEmpty
     private String social_name;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -53,4 +53,9 @@ public class UserRequest {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String authpass;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String confirm_password;
 }

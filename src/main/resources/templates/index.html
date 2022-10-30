@@ -1,10 +1,13 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="pt_br"
+      xmlns:th="http://thymeleaf.org/"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout/"
+      layout:decorator="layout">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Bootstrap demo</title>
-  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <title>Register</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 </head>
 <body>
@@ -15,118 +18,117 @@
         <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
           <div class="card-body p-4 p-md-5">
             <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Cadastro de Usuário</h3>
-            <form>
+
+            <form action="" th:action="@{/save-user}" th:object="${userRequest}" th:method="POST">
 
               <div class="row">
                 <div class="col-md-12">
                   <div class="form-outline">
-                    <input type="text" id="firstName" class="form-control form-control-lg" />
-                    <label class="form-label" for="firstName">Nome Completo</label>
+                    <input type="text" class="form-control form-control-lg" autofocus name="name" th:field="*{name}" placeholder="Nome Completo">
+                    <label class="form-label">Nome Completo</label>
                   </div>
                 </div>
 
                 <div class="col-md-12">
                   <div class="form-outline">
-                    <input type="text" id="lastName" class="form-control form-control-lg" />
-                    <label class="form-label" for="lastName">Nome Social (Se Possuir)</label>
+                    <input th:field="*{social_name}" type="text" id="social_name" class="form-control form-control-lg">
+                    <label class="form-label" for="social_name">Nome Social (Se Possuir)</label>
                   </div>
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-md-6 mb-4 d-flex align-items-center">
-
                   <div class="form-outline datepicker w-100">
-                    <input type="text" class="form-control form-control-lg" id="document" />
+                    <input th:field="*{document}" type="text" class="form-control form-control-lg" id="document">
                     <label for="document" class="form-label">Documento</label>
                   </div>
-
                 </div>
-                <div class="col-md-6 mb-4">
 
+                <div class="col-md-6 mb-4">
                   <h6 class="mb-2 pb-1">Tipo de documento: </h6>
-
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="femaleGender"
-                           value="option1" checked />
-                    <label class="form-check-label" for="femaleGender">CPF</label>
+                    <input th:field="*{document_type}" class="form-check-input" type="radio" value="CPF">
+                    <label class="form-check-label">CPF</label>
                   </div>
 
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="maleGender"
-                           value="option2" />
-                    <label class="form-check-label" for="maleGender">RG</label>
+                    <input th:field="*{document_type}" class="form-check-input" type="radio" value="RG">
+                    <label class="form-check-label" >RG</label>
                   </div>
 
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="otherGender"
-                           value="option3" />
-                    <label class="form-check-label" for="otherGender">Other</label>
+                    <input th:field="*{document_type}" class="form-check-input" type="radio" value="OTHER">
+                    <label class="form-check-label" >Other</label>
                   </div>
-
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-md-6 mb-4 pb-2">
-
                   <div class="form-outline">
-                    <input type="email" id="emailAddress" class="form-control form-control-lg" />
-                    <label class="form-label" for="emailAddress">Email</label>
+                    <input th:field="*{email}" type="email" class="form-control form-control-lg">
+                    <label class="form-label" >Email</label>
                   </div>
-
                 </div>
+
                 <div class="col-md-6 mb-4 pb-2">
-
                   <div class="form-outline">
-                    <input type="tel" id="phoneNumber" class="form-control form-control-lg" />
-                    <label class="form-label" for="phoneNumber">Phone Number</label>
+                    <input th:field="*{phone}" type="tel" class="form-control form-control-lg">
+                    <label class="form-label">Phone Number</label>
                   </div>
-
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-md-6 mb-4">
-                  <select class="form-select form-select-lg" aria-label="Default select example">
-                    <option value="1" disabled>Genero</option>
-                    <option value="2">Cisgenêro</option>
-                    <option value="3">Transgênero</option>
-                    <option value="4">Não-Binario</option>
-                    <option value="5">Intersex</option>
+                  <select th:field="*{gender}" class="form-select form-select-lg" aria-label="Default select example" >
+                    <option th:each="gender : ${genders}"
+                            th:value="${gender.value}"
+                            th:text="${gender.label}"
+                    ></option>
+<!--                    <option th:text="Gênero"></option>-->
+<!--                    <option th:value="CISGENDER" th:text="Cisgenêro"></option>-->
+<!--                    <option th:value="TRANSGENDER" th:text="Transgênero"></option>-->
+<!--                    <option th:value="NOT-BINARY" th:text="Não-Binario"></option>-->
+<!--                    <option th:value="INTERSEX" th:text="Intersex"></option>-->
                   </select>
                   <label class="form-label select-label">Genero</label>
                 </div>
 
                 <div class="col-md-6 mb-4">
-                  <select class="form-select form-select-lg" aria-label="Default select example">
-                    <option value="1" disabled>Identidade de Genero</option>
-                    <option value="2">Masculino</option>
-                    <option value="3">Feminino</option>
-                    <option value="4">Homen-Trans</option>
-                    <option value="5">Mulher-Trans</option>
+                  <select th:field="*{gender_identity}" class="form-select form-select-lg" aria-label="Default select example">
+                    <option th:each="genderIdentity : ${genderIdentities}"
+                            th:value=${genderIdentity.value}
+                            th:text="${genderIdentity.label}"
+                    ></option>
+<!--                    <option th:text="Identidade de Gênero"></option>-->
+<!--                    <option th:value="MALE" th:text="Masculino"></option>-->
+<!--                    <option th:value="FEMALE" th:text="Feminino"></option>-->
+<!--                    <option th:value="TRANSMALE" th:text="Homem-Trans"></option>-->
+<!--                    <option th:value="TRANSFEMALE" th:text="Mulher-Trans"></option>-->
                   </select>
-                  <label class="form-label select-label">Identidade de Genero</label>
+                  <label class="form-label select-label">Identidade de Gênero</label>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-6 mb-4">
                   <div class="form-outline">
-                    <input type="text" id="password" class="form-control form-control-lg" />
-                    <label class="form-label" for="password">Senha</label>
+                    <input th:field="*{password}" type="text" class="form-control form-control-lg">
+                    <label class="form-label">Senha</label>
                   </div>
                 </div>
 
                 <div class="col-md-6 mb-4">
                   <div class="form-outline">
-                    <input type="text" id="passwordConfirm" class="form-control form-control-lg" />
-                    <label class="form-label" for="passwordConfirm">Confirme o password</label>
+                    <input th:field="*{confirm_password}" type="text" class="form-control form-control-lg">
+                    <label class="form-label" >Confirme o password</label>
                   </div>
                 </div>
               </div>
 
               <div class="mt-4 pt-2">
-                <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
+                <input class="btn btn-primary btn-lg" type="submit" value="Registrar">
               </div>
 
             </form>
