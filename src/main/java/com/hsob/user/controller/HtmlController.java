@@ -42,11 +42,13 @@ public class HtmlController {
             return "index";
         }
         List<SelectValues> gender = new ArrayList<>();
+        gender.add(new SelectValues("", ""));
         gender.add(new SelectValues("Cisgenêro", "CISGENDER"));
         gender.add(new SelectValues("Transgênero", "TRANSGENDER"));
         gender.add(new SelectValues("Não-Binario", "NOT-BINARY"));
         gender.add(new SelectValues("Intersex", "INTERSEX"));
         List<SelectValues> genderIdentity = new ArrayList<>();
+        genderIdentity.add(new SelectValues("", ""));
         genderIdentity.add(new SelectValues("Masculino", "MALE"));
         genderIdentity.add(new SelectValues("Feminino", "FEMALE"));
         genderIdentity.add(new SelectValues("Homem-Trans", "TRANSMALE"));
